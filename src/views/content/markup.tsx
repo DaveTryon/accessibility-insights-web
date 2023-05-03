@@ -49,6 +49,7 @@ export type MarkupDeps = {
 
 export interface MarkupOptions {
     setPageTitle?: boolean;
+    testString?: string;
 }
 
 export type MarkupBasedComponentProps = {
