@@ -114,6 +114,7 @@ export interface UnifiedResult {
     identifiers: UnifiedIdentifiers;
     descriptors: UnifiedDescriptors;
     resolution: UnifiedResolution;
+    rule?: UnifiedRule;
 }
 
 export type InstanceResultStatus =
