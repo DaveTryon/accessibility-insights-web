@@ -122,6 +122,7 @@ export interface OnDetailsViewPivotSelected extends BaseActionPayload {
 
 export interface ToggleActionPayload extends BaseActionPayload {
     test: VisualizationType;
+    requirement?: string;
 }
 
 export type RescanVisualizationPayload = ToggleActionPayload;
