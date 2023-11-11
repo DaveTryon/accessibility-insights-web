@@ -20,7 +20,10 @@ export type PageOptions = {
 };
 
 export class Page extends Context {
-    constructor(protected readonly underlyingPage: Playwright.Page, options?: PageOptions) {
+    constructor(
+        protected readonly underlyingPage: Playwright.Page,
+        options?: PageOptions,
+    ) {
         super(underlyingPage);
 
         function forceEventFailure(eventDescription: string): void {
@@ -139,7 +142,7 @@ export class Page extends Context {
     public url(): URL {
         // We use mainFrame().url() instead of just url() here because:
         // * They ought to be equivalent in every case we care to test
-        // * There is at least one edge case (the background page) where we've seen puppeteer
+        // * There is at least one edge case (the background worker) where we've seen puppeteer
         //   mis-populating url() but not target().url() as ':', and we don't know that Playwright
         //   fixed that.
         return new URL(this.underlyingPage.mainFrame().url());

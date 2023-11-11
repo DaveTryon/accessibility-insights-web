@@ -10,23 +10,18 @@ on:
     - cron: '0 19 * * 0'
 
 env:
-  # Keep these in sync with /pipeline/install-node-prerequisites.yaml
+  # Keep this in sync with /pipeline/install-node-prerequisites.yaml
   NODE_VERSION: 16.14.2
-  DOTNET_SDK_VERSION: 6.0.301
 
 jobs:
   build:
     runs-on: ubuntu-20.04
     env: { PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 }
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-dotnet@v2
-      with: { dotnet-version: "${{ env.DOTNET_SDK_VERSION }}" }
-      timeout-minutes: 2
-
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: "${{ env.NODE_VERSION }}"
         cache: yarn
@@ -57,10 +52,10 @@ jobs:
         shard-index: [1, 2]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: "${{ env.NODE_VERSION }}"
         cache: yarn
@@ -90,10 +85,10 @@ jobs:
     steps:
     # This only needs to be present so codecov can use the source tree for some post-processing
     # This job doesn't require that we install dependencies
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with: { node-version: "${{ env.NODE_VERSION }}" }
       timeout-minutes: 2
 
@@ -116,10 +111,10 @@ jobs:
     runs-on: ubuntu-20.04
     env: { PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 }
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: "${{ env.NODE_VERSION }}"
         cache: yarn
@@ -150,34 +145,33 @@ jobs:
   codeql:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
     - uses: github/codeql-action/init@v2
       timeout-minutes: 2
       with:
         trap-caching: false
+        languages: javascript
     
-    - uses: github/codeql-action/autobuild@v2
-      timeout-minutes: 2
-
     - uses: github/codeql-action/analyze@v2
       timeout-minutes: 10
 
   e2e-web-tests:
     name: e2e-web-tests (${{ matrix.shard-index }}/${{ strategy.job-total }})
     runs-on: ubuntu-20.04
-    container: mcr.microsoft.com/playwright:v1.24.0-focal
+    # We need to update this each tiem we update playwright
+    container: mcr.microsoft.com/playwright:v1.39.0-focal
     strategy:
       fail-fast: false
       matrix:
         shard-index: [1, 2]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: "${{ env.NODE_VERSION }}"
         # Intentionally omitting caching; it would need a separate, larger
@@ -220,67 +214,14 @@ jobs:
           test-results/e2e/failure-screenshots
       timeout-minutes: 15 # chrome-logs is several GB, this can take a while
 
-  e2e-unified-tests:
-    name: e2e-unified-tests (${{ matrix.shard-index }}/${{ strategy.job-total }})
-    runs-on: ubuntu-20.04
-    env:
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-      DISPLAY: :99
-      DEBUG: pw:api
-    strategy:
-      fail-fast: false
-      matrix:
-        shard-index: [1, 2]
-
-    steps:
-    - uses: actions/checkout@v3
-      timeout-minutes: 2
-
-    - uses: actions/setup-dotnet@v2
-      with: { dotnet-version: "${{ env.DOTNET_SDK_VERSION }}" }
-      timeout-minutes: 2
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: "${{ env.NODE_VERSION }}"
-        cache: yarn
-      timeout-minutes: 5
-
-    - run: yarn install --immutable
-      timeout-minutes: 10
-
-    - run: yarn build:unified
-      timeout-minutes: 5
-
-    - run: yarn playwright install-deps chromium
-      timeout-minutes: 5
-
-    - name: configure xvfb to use DISPLAY var from env
-      if: runner.os == 'Linux'
-      run: |
-        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1024x768x24 &
-
-    - name: yarn test:unified
-      run: |
-        yarn test:unified --ci --shard=${{ matrix.shard-index }}/${{ strategy.job-total }}
-      timeout-minutes: 15
-
-    - name: upload artifact e2e-unified-tests-results
-      uses: actions/upload-artifact@v3
-      if: ${{ always() }}
-      with:
-        name: e2e-unified-tests-${{ matrix.shard-index }}-results
-        path: test-results/electron
-      timeout-minutes: 3
-
   e2e-report-tests:
     runs-on: ubuntu-20.04
     env: { PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 }
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.1.1
       timeout-minutes: 2
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: "${{ env.NODE_VERSION }}"
         cache: yarn
@@ -302,3 +243,13 @@ jobs:
         name: e2e-report-tests-results
         path: packages/report-e2e-tests/test-results
       timeout-minutes: 3
+
+  check-clearly-defined:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v4.1.1
+      timeout-minutes: 2
+
+    - name: Check ClearlyDefined for dependabot PR's
+      run: ./tools/clearly-defined/check-clearly-defined.ps1 -Verbose -PipelineType action
+      shell: pwsh

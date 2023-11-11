@@ -4,32 +4,31 @@ updates:
   directory: "/deploy/"
   schedule:
     interval: daily
-    time: "11:00"
-    timezone: "America/Los_Angeles" # Pacific Time
+    time: "08:30"  # UTC
   labels:
   - "category: engineering"
   - dependencies
   commit-message:
     prefix: chore
     include: scope
+  open-pull-requests-limit: 10  # Default value of 5 has been problematic
 - package-ecosystem: docker
   directory: "/"
   schedule:
     interval: daily
-    time: "11:00"
-    timezone: "America/Los_Angeles" # Pacific Time
+    time: "08:30"  # UTC
   labels:
   - "category: engineering"
   - dependencies
   commit-message:
     prefix: chore
     include: scope
+  open-pull-requests-limit: 10  # Default value of 5 has been problematic
 - package-ecosystem: npm
   directory: "/"
   schedule:
     interval: daily
-    time: "11:00"
-    timezone: "America/Los_Angeles" # Pacific Time
+    time: "08:30"  # UTC
   labels:
   - "category: engineering"
   - dependencies
@@ -37,6 +36,7 @@ updates:
     prefix: chore
     include: scope
   versioning-strategy: increase
+  open-pull-requests-limit: 10  # Default value of 5 has been problematic
   ignore:
     # axe-core updates require enough extra validation
     # on false positives and breaking ai-web, so avoiding
@@ -44,21 +44,16 @@ updates:
   - dependency-name: axe-core
     versions:
     - ">= 0"
-    # All electron builds are going to be manually updated
-    # since our release builds use a non-standard Electron build
-    # with distribution-restricted media codecs stripped out
-  - dependency-name: electron
-    versions:
-    - ">= 0"
     # Major version of @types/node is pinned to match the version of node we
     # use for builds (ideally, latest LTS)
   - dependency-name: "@types/node"
     versions:
     - ">=15.0.0"
-    # Major version upgrades of fluentui will require extra validation
+    # Ignore fluentui/react updates until we come up with a solution for either
+    # working with enzyme or replacing it
   - dependency-name: "@fluentui/react"
     versions:
-    - ">= 9.0.0"
+    - ">= 8.96.1"
     # Keeping react at 16 due to compatibility issues with enzyme
     # Upgrade tracked by https://mseng.visualstudio.com/1ES/_workitems/edit/1914758
   - dependency-name: react
@@ -77,5 +72,5 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: "11:00"
-    timezone: "America/Los_Angeles" # Pacific Time
+    time: "08:30"  # UTC
+  open-pull-requests-limit: 10  # Default value of 5 has been problematic

@@ -1,0 +1,14 @@
+[
+    "@swc/core",
+    "@typescript-eslint/parser",
+    "-/core-js-bundle",
+    "-/esbuild",
+    "-/eslint",
+    "-/jest-environment-jsdom",
+    "-/playwright",
+    "-/postcss",
+    "-/sass",
+    "-/stylelint",
+    "-/stylelint-config-standard-scss",
+    "-/ts-loader"
+]

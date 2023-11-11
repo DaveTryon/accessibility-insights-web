@@ -4,7 +4,7 @@ import { BaseStoreImpl } from 'background/stores/base-store-impl';
 import { IndexedDBAPI } from 'common/indexedDB/indexedDB';
 import { Logger } from 'common/logging/logger';
 import { StoreNames } from 'common/stores/store-names';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, merge } from 'lodash';
 
 export abstract class PersistentStore<TState> extends BaseStoreImpl<TState, Promise<void>> {
     private previouslyPersistedState: TState | null;
@@ -15,14 +15,13 @@ export abstract class PersistentStore<TState> extends BaseStoreImpl<TState, Prom
         protected readonly idbInstance: IndexedDBAPI,
         protected readonly indexedDBDataKey: string,
         protected readonly logger: Logger,
-        private persistStoreData: boolean,
     ) {
         super(storeName);
         this.previouslyPersistedState = null;
     }
 
     protected async persistData(storeData: TState): Promise<boolean> {
-        if (this.persistStoreData && !isEqual(this.previouslyPersistedState, storeData)) {
+        if (!isEqual(this.previouslyPersistedState, storeData)) {
             this.previouslyPersistedState = storeData;
             await this.idbInstance.setItem(this.indexedDBDataKey, storeData);
         }
@@ -31,30 +30,25 @@ export abstract class PersistentStore<TState> extends BaseStoreImpl<TState, Prom
 
     // Allow specific stores to override default state behavior
     protected generateDefaultState(persistedData: TState): TState {
-        return persistedData;
+        const defaultState = this.getDefaultState();
+        return !isEmpty(persistedData) ? merge({}, defaultState, persistedData) : defaultState;
     }
 
     public override initialize(initialState?: TState): void {
-        if (this.persistStoreData) {
-            const generatedPersistedState = this.generateDefaultState(this.persistedState);
+        const generatedPersistedState = this.generateDefaultState(this.persistedState);
 
-            this.state = initialState || (generatedPersistedState ?? this.getDefaultState());
+        this.state = initialState || generatedPersistedState;
 
-            this.addActionListeners();
-        } else {
-            super.initialize(initialState);
-        }
+        this.addActionListeners();
     }
 
     public async teardown(): Promise<void> {
-        if (this.persistStoreData) {
-            await this.idbInstance.removeItem(this.indexedDBDataKey);
-            this.previouslyPersistedState = null;
-        }
+        await this.idbInstance.removeItem(this.indexedDBDataKey);
+        this.previouslyPersistedState = null;
     }
 
     protected async emitChanged(): Promise<void> {
-        if (this.idbInstance && this.logger && this.persistStoreData) {
+        if (this.idbInstance && this.logger) {
             const storeData = cloneDeep(this.getState());
             await this.persistData(storeData);
         }

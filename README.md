@@ -3,7 +3,7 @@ Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT License.
 -->
 
-## ![Product Logo](./src/icons/brand/blue/brand-blue-48px.png) Accessibility Insights for Web & Android
+## ![Product Logo](./src/icons/brand/blue/brand-blue-48px.png) Accessibility Insights for Web
 
 [![Build Status](https://dev.azure.com/accessibility-insights/accessibility-insights-web/_apis/build/status/accessibility-insights-web%20CI?branchName=main)](https://dev.azure.com/accessibility-insights/accessibility-insights-web/_build/latest?definitionId=37&branchName=main)
 [![codecov](https://codecov.io/gh/microsoft/accessibility-insights-web/branch/main/graph/badge.svg)](https://codecov.io/gh/microsoft/accessibility-insights-web)
@@ -11,22 +11,13 @@ Licensed under the MIT License.
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/pbjjkligggfmakdaogkfomddhfmpjeni.svg)](https://chrome.google.com/webstore/detail/accessibility-insights-fo/pbjjkligggfmakdaogkfomddhfmpjeni)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/pbjjkligggfmakdaogkfomddhfmpjeni.svg)](https://chrome.google.com/webstore/detail/accessibility-insights-fo/pbjjkligggfmakdaogkfomddhfmpjeni/reviews)
 
-Two projects are built from this repository:
-
--   **Accessibility Insights for Web** is a browser extension for Google Chrome and the new Microsoft Edge, used for assessing the accessibility of web sites and web applications.
--   **Accessibility Insights for Android** is a cross-platform desktop tool used for testing accessibility of Android applications.
+This repository contains the code for **Accessibility Insights for Web**, which is a browser extension for Google Chrome and Microsoft Edge. It is used for assessing the accessibility of web sites and web applications.
 
 ### Install Accessibility Insights for Web
 
 -   ![Canary Logo](./src/icons/brand/red/brand-red-16px.png) [Canary](https://chrome.google.com/webstore/detail/hbcplehnakffdldhldncjlnbpfgogbem) (released continuously)
 -   ![Insider Logo](./src/icons/brand/violet/brand-violet-16px.png) [Insider](https://chrome.google.com/webstore/detail/nnmjfbmebeckhpejobgjjjnchlljiagp) (on feature completion)
 -   ![Production Logo](./src/icons/brand/blue/brand-blue-16px.png) [Production](https://chrome.google.com/webstore/detail/pbjjkligggfmakdaogkfomddhfmpjeni) (after validation in Insider)
-
-### Install Accessibility Insights for Android
-
--   MacOS ([Canary](https://aka.ms/accessibility-insights-for-android/downloads/CanaryMacOS), [Insider](https://aka.ms/accessibility-insights-for-android/downloads/InsiderMacOS), [Production](https://aka.ms/accessibility-insights-for-android/downloads/MacOS))
--   Windows ([Canary](https://aka.ms/accessibility-insights-for-android/downloads/CanaryWindows), [Insider](https://aka.ms/accessibility-insights-for-android/downloads/InsiderWindows), [Production](https://aka.ms/accessibility-insights-for-android/downloads/Windows))
--   Linux ([Canary](https://aka.ms/accessibility-insights-for-android/downloads/CanaryLinux), [Insider](https://aka.ms/accessibility-insights-for-android/downloads/InsiderLinux), [Production](https://aka.ms/accessibility-insights-for-android/downloads/Linux))
 
 ## Data/Telemetry
 
@@ -53,7 +44,6 @@ All contributions are welcome! To get started, please read through our [CONTRIBU
 -   [Git branch setup](./docs/git-branch-setup.md)
 -   [Virus scanner exclusions](./docs/virus-scanner-exclusions.md)
 -   [Building Accessibility Insights for Web](./docs/building-web.md)
--   [Building Accessibility Insights for Android (Unified)](./docs/building-unified.md)
 
 ## Code of Conduct
 

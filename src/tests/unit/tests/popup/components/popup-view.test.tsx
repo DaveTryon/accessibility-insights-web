@@ -79,9 +79,6 @@ describe('PopupView', () => {
             lastSelectedHighContrast: false,
             bugService: 'none',
             bugServicePropertiesMap: {},
-            adbLocation: null,
-            lastWindowState: null,
-            lastWindowBounds: null,
             showAutoDetectedFailuresDialog: true,
             showSaveAssessmentDialog: true,
         };
@@ -101,7 +98,6 @@ describe('PopupView', () => {
                         It.isAny(),
                         IsSameObject(actionMessageCreatorStrictMock.object),
                         IsSameObject(handlerMock.object),
-                        It.isAny(),
                     ),
                 )
                 .returns(() => rowConfigStub as any)

@@ -102,7 +102,7 @@ export const TRANSFER_QUICK_ASSESS_DATA_TO_ASSESSMENT_INITIATED: string =
 export const TriggeredByNotApplicable: TriggeredBy = 'N/A';
 export type TriggeredBy = 'mouseclick' | 'keypress' | 'shortcut' | 'N/A';
 
-export type ReportExportFormat = 'Assessment' | 'FastPass';
+export type ReportExportFormat = 'Assessment' | 'FastPass' | 'QuickAssess';
 
 export enum TelemetryEventSource {
     LaunchPad,
@@ -119,8 +119,6 @@ export enum TelemetryEventSource {
     NewBugButton,
     TargetPage,
     ContentPage,
-    ElectronDeviceConnect,
-    ElectronResultsView,
     Background,
     PopUp,
     DevTools,
@@ -228,13 +226,6 @@ export type NeedsReviewAnalyzerScanTelemetryData = {
     incompleteRuleResults: string;
 } & RuleAnalyzerScanTelemetryData;
 
-export type AndroidScanStartedTelemetryData = {
-    source: TelemetryEventSource;
-};
-export type AndroidScanCompletedTelemetryData = {
-    scanDuration: number;
-} & InstanceCount;
-
 export type TabStopsAutomatedResultsTelemetryData = {
     tabStopAutomatedFailuresInstanceCount: TabStopAutomatedFailuresInstanceCount;
 } & BaseTelemetryData;
@@ -267,36 +258,12 @@ export type TabStopAutomatedFailuresInstanceCount = {
     [requirementId: string]: number;
 };
 
-export type AtfaInstanceCount = {
-    ERROR: {
-        [ruleId: string]: number;
-    };
-    WARNING: {
-        [ruleId: string]: number;
-    };
-    INFO: {
-        [ruleId: string]: number;
-    };
-    RESOLVED: {
-        [ruleId: string]: number;
-    };
-};
-
-export type AndroidScanFailedTelemetryData = {
-    port?: number;
-    scanDuration: number;
-};
-
 export type SetAllUrlsPermissionTelemetryData = {
     permissionState: boolean;
 } & BaseTelemetryData;
 
 export type ScanIncompleteWarningsTelemetryData = {
     scanIncompleteWarnings: ScanIncompleteWarningId[];
-};
-
-export type DeviceFocusKeyEventTelemetryData = {
-    keyEventCode: number;
 };
 
 export type AutoDetectedFailuresDialogStateTelemetryData = {
@@ -341,10 +308,6 @@ export type TelemetryData =
     | IssuesAnalyzerScanTelemetryData
     | AssessmentRequirementScanTelemetryData
     | RequirementStatusTelemetryData
-    | AndroidScanStartedTelemetryData
-    | AndroidScanCompletedTelemetryData
-    | AndroidScanFailedTelemetryData
-    | DeviceFocusKeyEventTelemetryData
     | ScanIncompleteWarningsTelemetryData
     | SetAllUrlsPermissionTelemetryData
     | TabStopsAutomatedResultsTelemetryData

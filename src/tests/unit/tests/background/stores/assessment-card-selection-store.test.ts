@@ -60,7 +60,6 @@ describe('AssessmentCardSelectionStore', () => {
             null,
             null,
             null,
-            null,
             StoreNames.AssessmentCardSelectionStore,
         );
 
@@ -137,7 +136,6 @@ describe('AssessmentCardSelectionStore Test', () => {
                 initialAssessmentStoreDataGeneratorMock.object,
                 null,
                 null,
-                true,
                 '',
                 null,
             );
@@ -158,7 +156,6 @@ describe('AssessmentCardSelectionStore Test', () => {
                 initialAssessmentStoreDataGeneratorMock.object,
                 null,
                 null,
-                true,
                 '',
                 null,
             );
@@ -752,6 +749,9 @@ describe('AssessmentCardSelectionStore Test', () => {
     function createStoreForAssessmentCardSelectionActions(
         actionName: keyof AssessmentCardSelectionActions,
     ): StoreTester<AssessmentCardSelectionStoreData, AssessmentCardSelectionActions> {
+        const assessmentStoreState: AssessmentStoreData = createAssessmentStoreDataWithStatus(
+            ManualTestStatus.UNKNOWN,
+        );
         const factory = (actions: AssessmentCardSelectionActions) =>
             new AssessmentCardSelectionStore(
                 actions,
@@ -762,10 +762,11 @@ describe('AssessmentCardSelectionStore Test', () => {
                 initialAssessmentStoreDataGeneratorMock.object,
                 null,
                 null,
-                true,
                 '',
                 null,
             );
+
+        setupDataGeneratorMock(null, assessmentStoreState);
 
         return new StoreTester(AssessmentCardSelectionActions, actionName, factory);
     }
@@ -774,6 +775,10 @@ describe('AssessmentCardSelectionStore Test', () => {
         actionName: keyof AssessmentActions,
         assessmentsProvider?: AssessmentsProvider,
     ): StoreTester<AssessmentCardSelectionStoreData, AssessmentActions> {
+        const assessmentStoreState: AssessmentStoreData = createAssessmentStoreDataWithStatus(
+            ManualTestStatus.UNKNOWN,
+        );
+
         const factory = (actions: AssessmentActions) =>
             new AssessmentCardSelectionStore(
                 new AssessmentCardSelectionActions(),
@@ -784,10 +789,11 @@ describe('AssessmentCardSelectionStore Test', () => {
                 initialAssessmentStoreDataGeneratorMock.object,
                 null,
                 null,
-                true,
                 '',
                 null,
             );
+
+        setupDataGeneratorMock(null, assessmentStoreState);
 
         return new StoreTester(AssessmentActions, actionName, factory);
     }

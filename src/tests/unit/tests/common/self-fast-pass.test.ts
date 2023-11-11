@@ -71,7 +71,6 @@ describe('SelfFastPass', () => {
                             'aria-input-field-name',
                             'color-contrast',
                             'th-has-data-cells',
-                            'scrollable-region-focusable',
                             'label-content-name-mismatch',
                             'p-as-heading',
                         ],
@@ -170,7 +169,7 @@ describe('SelfFastPass', () => {
                             html: 'html data',
                         },
                     ],
-                } as AxeRule),
+                }) as AxeRule,
         );
     }
 
